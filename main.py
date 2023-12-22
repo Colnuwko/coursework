@@ -6,12 +6,11 @@ import folium
 import io
 from geopy.geocoders import Nominatim
 import osmnx as ox
-import clipboard
-from folium.plugins import MousePosition
 from osmnx import routing
 
-# sys.stdout.encoding
-# sys.stdout.reconfigure(encoding='utf-8')
+import algorithms
+sys.stdout.encoding
+sys.stdout.reconfigure(encoding='utf-8')
 ox.config(log_console=True, use_cache=True)
 locator = Nominatim(user_agent = "myapp")
         
@@ -37,67 +36,67 @@ class Ui_MainWindow(QMainWindow):
         self.to_label_text = QtWidgets.QLineEdit(self.groupBox)
         self.to_label_text.setGeometry(QtCore.QRect(70, 80, 211, 31))
         self.to_label_text.setObjectName("to_label_text")
-        self.label_2 = QtWidgets.QLabel(self.groupBox)
-        self.label_2.setGeometry(QtCore.QRect(70, 40, 71, 21))
-        self.label_2.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_2.setObjectName("label_2")
-        self.label_3 = QtWidgets.QLabel(self.groupBox)
-        self.label_3.setGeometry(QtCore.QRect(70, 90, 71, 21))
-        self.label_3.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_3.setObjectName("label_3")
-        self.label_4 = QtWidgets.QLabel(self.groupBox)
-        self.label_4.setGeometry(QtCore.QRect(70, 140, 71, 21))
-        self.label_4.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_4.setObjectName("label_4")
-        self.label_5 = QtWidgets.QLabel(self.groupBox)
-        self.label_5.setGeometry(QtCore.QRect(70, 190, 71, 21))
-        self.label_5.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_5.setObjectName("label_5")
+        self.latitude_from = QtWidgets.QLabel(self.groupBox)
+        self.latitude_from.setGeometry(QtCore.QRect(70, 40, 71, 21))
+        self.latitude_from.setAlignment(QtCore.Qt.AlignCenter)
+        self.latitude_from.setObjectName("latitude_to")
+        self.longitude_from = QtWidgets.QLabel(self.groupBox)
+        self.longitude_from.setGeometry(QtCore.QRect(70, 90, 71, 21))
+        self.longitude_from.setAlignment(QtCore.Qt.AlignCenter)
+        self.longitude_from.setObjectName("longitude_from")
+        self.latitude_to = QtWidgets.QLabel(self.groupBox)
+        self.latitude_to.setGeometry(QtCore.QRect(70, 140, 71, 21))
+        self.latitude_to.setAlignment(QtCore.Qt.AlignCenter)
+        self.latitude_to.setObjectName("latitude_to")
+        self.longitude_to = QtWidgets.QLabel(self.groupBox)
+        self.longitude_to.setGeometry(QtCore.QRect(70, 190, 71, 21))
+        self.longitude_to.setAlignment(QtCore.Qt.AlignCenter)
+        self.longitude_to.setObjectName("longitude_to")
         self.calculated_res = QtWidgets.QLabel(self.groupBox)
         self.calculated_res.setGeometry(QtCore.QRect(0, 220, 300, 71))
         self.calculated_res.setStyleSheet("border: 1px solid black;")
         self.calculated_res.setAlignment(QtCore.Qt.AlignCenter)
         self.calculated_res.setObjectName("result data")
         self.calculated_res.setWordWrap(True)
-        self.textEdit = QtWidgets.QLineEdit(self.groupBox)
-        self.textEdit.setGeometry(QtCore.QRect(150, 30, 131, 31))
-        self.textEdit.setAcceptDrops(True)
-        self.textEdit.setObjectName("textEdit")
-        self.textEdit_2 = QtWidgets.QLineEdit(self.groupBox)
-        self.textEdit_2.setGeometry(QtCore.QRect(150, 80, 131, 31))
-        self.textEdit_2.setAcceptDrops(True)
-        self.textEdit_2.setObjectName("textEdit_2")
-        self.textEdit_3 = QtWidgets.QLineEdit(self.groupBox)
-        self.textEdit_3.setGeometry(QtCore.QRect(150, 130, 131, 31))
-        self.textEdit_3.setAcceptDrops(True)
-        self.textEdit_3.setObjectName("textEdit_3")
-        self.textEdit_4 = QtWidgets.QLineEdit(self.groupBox)
-        self.textEdit_4.setGeometry(QtCore.QRect(150, 180, 131, 31))
-        self.textEdit_4.setAcceptDrops(True)
-        self.textEdit_4.setObjectName("textEdit_4")
-        self.fromm = QtWidgets.QLabel(self.groupBox)
-        self.fromm.setGeometry(QtCore.QRect(20, 40, 60, 20))
-        self.fromm.setObjectName("from")
-        self.to = QtWidgets.QLabel(self.groupBox)
-        self.to.setGeometry(QtCore.QRect(20, 70, 60, 20))
-        self.to.setObjectName("to")
-        self.pushButton = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton.setGeometry(QtCore.QRect(10, 440, 281, 23))
-        self.pushButton.setObjectName("pushButton")
-        self.radio_b_time = QtWidgets.QRadioButton(self.groupBox)
-        self.radio_b_time.setGeometry(QtCore.QRect(50, 320, 87, 17))
-        self.radio_b_time.setObjectName("radio_b_time")
+        self.input_latitude_from = QtWidgets.QLineEdit(self.groupBox)
+        self.input_latitude_from.setGeometry(QtCore.QRect(150, 30, 131, 31))
+        self.input_latitude_from.setAcceptDrops(True)
+        self.input_latitude_from.setObjectName("input_latitude_from")
+        self.input_longitude_from = QtWidgets.QLineEdit(self.groupBox)
+        self.input_longitude_from.setGeometry(QtCore.QRect(150, 80, 131, 31))
+        self.input_longitude_from.setAcceptDrops(True)
+        self.input_longitude_from.setObjectName("input_longitude_from")
+        self.input_latitude_to = QtWidgets.QLineEdit(self.groupBox)
+        self.input_latitude_to.setGeometry(QtCore.QRect(150, 130, 131, 31))
+        self.input_latitude_to.setAcceptDrops(True)
+        self.input_latitude_to.setObjectName("input_latitude_to")
+        self.input_longitude_to = QtWidgets.QLineEdit(self.groupBox)
+        self.input_longitude_to.setGeometry(QtCore.QRect(150, 180, 131, 31))
+        self.input_longitude_to.setAcceptDrops(True)
+        self.input_longitude_to.setObjectName("input_longitude_to")
+        self.from_info_text = QtWidgets.QLabel(self.groupBox)
+        self.from_info_text.setGeometry(QtCore.QRect(20, 40, 60, 20))
+        self.from_info_text.setObjectName("from")
+        self.to_info_text = QtWidgets.QLabel(self.groupBox)
+        self.to_info_text.setGeometry(QtCore.QRect(20, 70, 60, 20))
+        self.to_info_text.setObjectName("to_info_text")
+        self.route_display_button = QtWidgets.QPushButton(self.groupBox)
+        self.route_display_button.setGeometry(QtCore.QRect(10, 440, 281, 23))
+        self.route_display_button.setObjectName("route_display_button")
+        self.radio_button_time = QtWidgets.QRadioButton(self.groupBox)
+        self.radio_button_time.setGeometry(QtCore.QRect(50, 320, 87, 17))
+        self.radio_button_time.setObjectName("radio_button_time")
         self.select_type_group = QtWidgets.QButtonGroup(MainWindow)
         self.select_type_group.setObjectName("select_type_group")
-        self.select_type_group.addButton(self.radio_b_time)
-        self.radio_b_length = QtWidgets.QRadioButton(self.groupBox)
-        self.radio_b_length.setGeometry(QtCore.QRect(150, 320, 111, 17))
-        self.radio_b_length.setObjectName("radio_b_length")
-        self.select_type_group.addButton(self.radio_b_length)
-        self.short_type = QtWidgets.QLabel(self.groupBox)
-        self.short_type.setGeometry(QtCore.QRect(20, 290, 261, 20))
-        self.short_type.setAlignment(QtCore.Qt.AlignCenter)
-        self.short_type.setObjectName("short_type")
+        self.select_type_group.addButton(self.radio_button_time)
+        self.radio_button_length = QtWidgets.QRadioButton(self.groupBox)
+        self.radio_button_length.setGeometry(QtCore.QRect(150, 320, 111, 17))
+        self.radio_button_length.setObjectName("radio_button_length")
+        self.select_type_group.addButton(self.radio_button_length)
+        self.info_ab_short_type = QtWidgets.QLabel(self.groupBox)
+        self.info_ab_short_type.setGeometry(QtCore.QRect(20, 290, 261, 20))
+        self.info_ab_short_type.setAlignment(QtCore.Qt.AlignCenter)
+        self.info_ab_short_type.setObjectName("info_ab_short_type")
         self.radio_search = QtWidgets.QRadioButton(self.groupBox)
         self.radio_search.setGeometry(QtCore.QRect(50, 390, 87, 17))
         self.radio_search.setObjectName("radio_search")
@@ -123,25 +122,25 @@ class Ui_MainWindow(QMainWindow):
         self.list_of_cities.setGeometry(QtCore.QRect(20, 90, 261, 111))
         self.list_of_cities.setObjectName("list_of_cities")    
         self.list_of_cities.addItems(["Самара", "Москва", "Санкт-петербург", "Волгоград", "Казань"])
-        self.radioButton_2 = QtWidgets.QRadioButton(self.groupBox_2)
-        self.radioButton_2.setGeometry(QtCore.QRect(220, 290, 71, 17))
-        self.radioButton_2.setObjectName("radioButton_2")
+        self.button_select_walk_mode = QtWidgets.QRadioButton(self.groupBox_2)
+        self.button_select_walk_mode.setGeometry(QtCore.QRect(220, 290, 71, 17))
+        self.button_select_walk_mode.setObjectName("button_select_walk_mode")
         self.select_mode_group = QtWidgets.QButtonGroup(MainWindow)
         self.select_mode_group.setObjectName("select_mode_group")
-        self.select_mode_group.addButton(self.radioButton_2)
-        self.radioButton = QtWidgets.QRadioButton(self.groupBox_2)
-        self.radioButton.setGeometry(QtCore.QRect(20, 290, 81, 17))
-        self.radioButton.setObjectName("radioButton")
-        self.select_mode_group.addButton(self.radioButton)
-        self.venchile_mode = QtWidgets.QLabel(self.groupBox_2)
-        self.venchile_mode.setGeometry(QtCore.QRect(20, 260, 261, 20))
-        self.venchile_mode.setAutoFillBackground(False)
-        self.venchile_mode.setAlignment(QtCore.Qt.AlignCenter)
-        self.venchile_mode.setObjectName("venchile_mode")
-        self.radioButton_3 = QtWidgets.QRadioButton(self.groupBox_2)
-        self.radioButton_3.setGeometry(QtCore.QRect(110, 290, 101, 17))
-        self.radioButton_3.setObjectName("radioButton_3")
-        self.select_mode_group.addButton(self.radioButton_3)
+        self.select_mode_group.addButton(self.button_select_walk_mode)
+        self.button_select_drive_mode = QtWidgets.QRadioButton(self.groupBox_2)
+        self.button_select_drive_mode.setGeometry(QtCore.QRect(20, 290, 81, 17))
+        self.button_select_drive_mode.setObjectName("button_select_drive_mode")
+        self.select_mode_group.addButton(self.button_select_drive_mode)
+        self.info_of_venchile_mode = QtWidgets.QLabel(self.groupBox_2)
+        self.info_of_venchile_mode.setGeometry(QtCore.QRect(20, 260, 261, 20))
+        self.info_of_venchile_mode.setAutoFillBackground(False)
+        self.info_of_venchile_mode.setAlignment(QtCore.Qt.AlignCenter)
+        self.info_of_venchile_mode.setObjectName("info_of_venchile_mode")
+        self.button_select_bike_mode = QtWidgets.QRadioButton(self.groupBox_2)
+        self.button_select_bike_mode.setGeometry(QtCore.QRect(110, 290, 101, 17))
+        self.button_select_bike_mode.setObjectName("button_select_bike_mode")
+        self.select_mode_group.addButton(self.button_select_bike_mode)
         self.pushButton_2 = QtWidgets.QPushButton(self.groupBox_2)
         self.pushButton_2.setGeometry(QtCore.QRect(10, 330, 271, 40))
         self.pushButton_2.setObjectName("pushButton_2")
@@ -170,91 +169,84 @@ class Ui_MainWindow(QMainWindow):
         self.horizontalLayout.addWidget(self.view, stretch=1)
         self.first_set()
 
+    def retranslateUi(self, MainWindow):
+
+        MainWindow.setWindowTitle("я карта я карта")
+        self.groupBox.setTitle("Основное меню")
+        self.from_info_text.setText("Откуда")
+        self.to_info_text.setText("Куда")
+        self.route_display_button.setText("Проложить маршрут")
+        self.radio_button_time.setText("По времени")
+        self.radio_button_length.setText("По расстоянию")
+        self.info_ab_short_type.setText("Расчет оптимального пути")
+        self.radio_search.setText("Поиск")
+        self.radio_point.setText("Точки на карте")
+        self.geo_data_type.setText("Как укажете данные?")
+        self.groupBox_2.setTitle("Выбор карты")
+        self.select_city.setText("Выберите Город")
+        self.latitude_to.setText("latitude")
+        self.longitude_from.setText("longitude")
+        self.latitude_to.setText("latitude")
+        self.longitude_to.setText("longitude")
+        self.button_select_walk_mode.setText("Пешком")
+        self.button_select_drive_mode.setText("На машине")
+        self.info_of_venchile_mode.setText("Как будете добираться?")
+        self.button_select_bike_mode.setText("На велосипеде")
+        self.pushButton_2.setText("Загрузить данные для выбранного города")
+        self.label.setText("Внимание Загрузка данных обязательна!")
         
-    def first_set(self, coord = [53.211936, 50.177311]):
-        self.m = folium.Map(
-            location=coord, zoom_start=13
-        )
-        data = io.BytesIO()
         
-        popup1 = folium.LatLngPopup()
-        self.m.add_child(popup1)
-        self.m.save(data, close_file=False)
+        self.pushButton_2.clicked.connect(self.button_load_data_click)
+        self.button_select_drive_mode.clicked.connect(self.button_click_mode_drive)
+        self.button_select_walk_mode.clicked.connect(self.button_click_mode_walk)
+        self.button_select_bike_mode.clicked.connect(self.button_click_mode_bike)
+        self.list_of_cities.itemClicked.connect(self.select_city_click)
+        self.radio_search.clicked.connect(self.click_input_search)
+        self.radio_point.clicked.connect(self.click_input_point)
+        self.route_display_button.clicked.connect(self.get_shortest_path)
+        self.radio_button_time.clicked.connect(self.butto_click_type_time)
+        self.radio_button_length.clicked.connect(self.butto_click_type_length)
+        self.radio_button_time.click()
+        self.radio_search.click()
+        self.button_select_drive_mode.click()
+        
+    
+    def first_set(self,coord = [53.211936, 50.177311]):
+        data = algorithms.first_set(coord)
         self.view.setHtml(data.getvalue().decode())
-
-
         
-    def get_coord(self, place: str):
-        temp = locator.geocode(place)
-        if temp:
-            temp.point
-            self.coord = [temp.latitude, temp.longitude]
-        else: self.coord = None
-
-        
-        
-    def click_input_search(self):
-        self.typ = "search"
-        self.label_2.hide()
-        self.label_3.hide()
-        self.label_4.hide()
-        self.label_5.hide()
-        self.textEdit.hide()
-        self.textEdit_2.hide()
-        self.textEdit_3.hide()
-        self.textEdit_4.hide()
-        self.from_label_text.show()
-        self.to_label_text.show()
-        self.to.move(20, 90)
-        
-    def click_input_point(self):
-        self.typ = "point"
-        self.label_2.show()
-        self.label_3.show()
-        self.label_4.show()
-        self.label_5.show()
-        self.textEdit.show()
-        self.textEdit_2.show()
-        self.textEdit_3.show()
-        self.textEdit_4.show()
-        self.from_label_text.hide()
-        self.to_label_text.hide()
-        self.to.move(20, 160)
-    def button_click_mode_drive(self):
-        self.mode = "drive"
-        
-    def button_click_mode_bike(self):
-        self.mode = "bike"
-        
-    def button_click_mode_walk(self):
-        self.mode = "walk"
-        
-    def butto_click_type_length(self):
-        self.type = "length"
-        
-    def butto_click_type_time(self):
-        self.type = "time"
-            
-    def select_city_click(self, item):
-        self.city = item.text()
-        self.label.show()
         
     def button_load_data_click(self):
-        
         if self.city == None:
                 QMessageBox.about(MainWindow, "Внимание", "Вы не задали город")
         else: 
-            
-            self.get_coord(str(self.city)+","+ str("Russia"))
+            self.coord = algorithms.get_coord(str(self.city)+","+ str("Russia"))
             self.first_set(self.coord)
             QMessageBox.about(MainWindow, "Внимание", "Загрузка графа может занять некоторое время, пожалуйста подождите")
             self.set_graph_city(str(self.city)+","+ str("Russia"))
             self.load_city = self.city
     
-    def set_graph_city(self, city: str):
-        self.graph = ox.graph_from_place(city, network_type = self.mode)
-        QMessageBox.about(MainWindow, "Успех", "Загрузка данных прошла успешно")
-        self.label.hide()
+    def get_shortest_path(self):
+        if self.graph != None: 
+            if self.typ == "point":
+                start_coord = [float(self.input_latitude_from.text()), float(self.input_longitude_from.text())]
+                end_coord = [float(self.input_latitude_to.text()), float(self.input_longitude_to.text())]
+                self.start_loc = locator.reverse(start_coord)
+                self.end_loc = locator.reverse(end_coord)
+            else:
+                self.start_loc = self.load_city + ", " + self.from_label_text.text()
+                self.end_loc = self.load_city + ", " + self.to_label_text.text()
+                start_coord = algorithms.get_coord(self.start_loc)
+                end_coord = algorithms.get_coord(self.end_loc)
+                
+            if start_coord != None and end_coord != None:   
+                orig_node = ox.nearest_nodes(self.graph, start_coord[1], start_coord[0])
+                dest_node = ox.nearest_nodes(self.graph, end_coord[1], end_coord[0])
+                shortest_route = routing.shortest_path(self.graph, orig_node, dest_node, weight=self.type)
+                self.set_path_in_map(shortest_route, start_coord, end_coord)
+            else:  QMessageBox.about(MainWindow, "Внимание", "Адресс введен неверно")
+        else: QMessageBox.about(MainWindow, "Внимание", "Вы не загрузили данные города")
+    
     
     def set_path_in_map(self, shortest_route, start_coord, end_coord):
         print("set start in map")
@@ -269,112 +261,80 @@ class Ui_MainWindow(QMainWindow):
             icon = folium.Icon(color='red'))
         self.shortest_route_map = ox.plot_route_folium(self.graph, shortest_route, 
                                           tiles='openstreetmap')
+        
         start_marker.add_to(self.shortest_route_map)
         end_marker.add_to(self.shortest_route_map)
         data = io.BytesIO()
-        
-        self.length = 0.0
-        for i in range(len(shortest_route)-1):
-            self.length += float(self.graph[shortest_route[i]][shortest_route[i+1]][0]['length'])
-        text = "Расчетная дистанция: " + str(float("{:.2f}".format(self.length))) + "метров"
-       
-        self.time = 0.0
-        for i in range(len(shortest_route)-1):
-            keys = self.graph[shortest_route[i]][shortest_route[i+1]][0].keys()
-            if "maxspeed" in keys and "length" in keys:
- 
-                print(self.graph[shortest_route[i]][shortest_route[i+1]][0])
-                try:
-                    if type(self.graph[shortest_route[i]][shortest_route[i+1]][0]['maxspeed']) is list:
-                        self.time += float(self.graph[shortest_route[i]][shortest_route[i+1]][0]['length']) / float(self.graph[shortest_route[i]][shortest_route[i+1]][0]['maxspeed'][0]) *100/36
-                    else:    
-                        self.time += float(self.graph[shortest_route[i]][shortest_route[i+1]][0]['length']) / float(self.graph[shortest_route[i]][shortest_route[i+1]][0]['maxspeed']) *100/36
-                except: 
-                    self.time += float((self.graph[shortest_route[i]][shortest_route[i+1]][0]['length'])/60*100/36)
-    
-            else: 
-                print('----------------------------no-----------------')
-                self.time += float((self.graph[shortest_route[i]][shortest_route[i+1]][0]['length'])/60*100/36)
-        text = "Расчетное время: "+ str(float("{:.2f}".format(self.time))) + "секунд\n" + text
-        self.calculated_res.setText(text)
-            
         popup1 = folium.LatLngPopup()
-        self.shortest_route_map.add_child(popup1)
         
-
+        self.shortest_route_map.add_child(popup1)
         self.shortest_route_map.save(data, close_file=False)
         self.view.setHtml(data.getvalue().decode())
-
-            
-
-    def get_shortest_path(self):
-        # self.start_loc = self.from_label_text.text
-        # print(self.start_loc)
-        ox.config(log_console=True, use_cache=True)
-        locator = Nominatim(user_agent = "myapp")
-        if self.graph != None: 
-            if self.typ == "point":
-                start_coord = [float(self.textEdit.text()), float(self.textEdit_2.text())]
-                end_coord = [float(self.textEdit_3.text()), float(self.textEdit_4.text())]
-                self.start_loc = locator.reverse(start_coord)
-                self.end_loc = locator.reverse(end_coord)
-                
-            else:
-                self.start_loc = self.load_city + ", " + self.from_label_text.text()
-                self.end_loc = self.load_city + ", " + self.to_label_text.text()
-                self.get_coord(self.start_loc)
-                print(self.start_loc)
-                start_coord = self.coord
-                self.get_coord(self.end_loc)
-                end_coord = self.coord
-            if start_coord != None and end_coord != None:   
-                orig_node = ox.nearest_nodes(self.graph, start_coord[1], start_coord[0])
-                dest_node = ox.nearest_nodes(self.graph, end_coord[1], end_coord[0])
-                shortest_route = routing.shortest_path(self.graph, orig_node, dest_node, weight=self.type)
-                self.set_path_in_map(shortest_route, start_coord, end_coord)
-            else:  QMessageBox.about(MainWindow, "Внимание", "Адресс введен неверно")
-        else: QMessageBox.about(MainWindow, "Внимание", "Вы не загрузили данные города")
+        
+        text = algorithms.calculating_time_and_length(self.graph, shortest_route)
+        self.calculated_res.setText(text)
+        
     
-    def retranslateUi(self, MainWindow):
+    
+    def click_input_search(self):
+        self.typ = "search"
+        self.latitude_to.hide()
+        self.longitude_from.hide()
+        self.latitude_to.hide()
+        self.longitude_to.hide()
+        self.input_latitude_from.hide()
+        self.input_longitude_from.hide()
+        self.input_latitude_to.hide()
+        self.input_longitude_to.hide()
+        self.from_label_text.show()
+        self.to_label_text.show()
+        self.to_info_text.move(20, 90)
+        
+    def click_input_point(self):
+        self.typ = "point"
+        self.latitude_to.show()
+        self.longitude_from.show()
+        self.latitude_to.show()
+        self.longitude_to.show()
+        self.input_latitude_from.show()
+        self.input_longitude_from.show()
+        self.input_latitude_to.show()
+        self.input_longitude_to.show()
+        self.from_label_text.hide()
+        self.to_label_text.hide()
+        self.to_info_text.move(20, 160)
+        
+    def button_click_mode_drive(self):
+        self.mode = "drive"
+        
+    def button_click_mode_bike(self):
+        self.mode = "bike"
+        
+    def button_click_mode_walk(self):
+        self.mode = "walk"
+        
+    def butto_click_type_length(self):
+        self.type = "length"
+        
+    def butto_click_type_time(self):
+        self.type = "travel_time"
+            
+    def select_city_click(self, item):
+        self.city = item.text()
+        self.label.show()
+    
+    def set_graph_city(self, city: str):
+        self.graph = ox.graph_from_place(city, network_type = self.mode)
+        QMessageBox.about(MainWindow, "Успех", "Загрузка данных прошла успешно")
+        self.added_graph()
+        self.label.hide()
 
-        MainWindow.setWindowTitle("MainWindow")
-        self.groupBox.setTitle("main_box")
-        self.fromm.setText("Откуда")
-        self.to.setText("Куда")
-        self.pushButton.setText("Проложить маршрут")
-        self.radio_b_time.setText("По времени")
-        self.radio_b_length.setText("По расстоянию")
-        self.short_type.setText("Расчет оптимальног пути")
-        self.radio_search.setText("Поиск")
-        self.radio_point.setText("Точки на карте")
-        self.geo_data_type.setText("Как укажете данные?")
-        self.groupBox_2.setTitle("Select_map")
-        self.select_city.setText("Выберите Город")
-        self.label_2.setText("latitude")
-        self.label_3.setText("longitude")
-        self.label_4.setText("latitude")
-        self.label_5.setText("longitude")
-        self.radioButton_2.setText("Пешком")
-        self.radioButton.setText("На машине")
-        self.venchile_mode.setText("Как будете добираться?")
-        self.radioButton_3.setText("На велосипеде")
-        self.pushButton_2.setText("Подгрузить данные для выбранного города")
-        self.label.setText("Внимание Подгрузка данных обязательна!")
-        
-        
-        self.pushButton_2.clicked.connect(self.button_load_data_click)
-        self.radioButton.clicked.connect(self.button_click_mode_drive)
-        self.radioButton_2.clicked.connect(self.button_click_mode_walk)
-        self.radioButton_3.clicked.connect(self.button_click_mode_bike)
-        self.list_of_cities.itemClicked.connect(self.select_city_click)
-        self.radio_search.clicked.connect(self.click_input_search)
-        self.radio_point.clicked.connect(self.click_input_point)
-        self.pushButton.clicked.connect(self.get_shortest_path)
-        self.radio_b_time.clicked.connect(self.butto_click_type_time)
-        self.radio_b_length.clicked.connect(self.butto_click_type_length)
-        self.radio_b_time.click()
-        self.radio_search.click()
-        self.radioButton.click()
+    def added_graph(self):
+        list_keys = {
+        'secondary': 50, 'primary': 70, 'tertiary': 30, 'secondary_link': 30, 'residential': 20, 'primary_link': 30}
+        self.graph = ox.add_edge_speeds(self.graph, list_keys, 50)
+
+        self.graph = ox.add_edge_travel_times(self.graph)
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
